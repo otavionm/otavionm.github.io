@@ -1,63 +1,337 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>otavio.top</title>
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
+    <link rel="icon" href="https://otavio.top/favicon.ico" type="image/jpg" >
+<style>  
+@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+
+:root{
+    --background-color: #000000; /* #fcf7e9; */
+    --link-item-color: #9ad; /* #efe7d2; */
+    --font-heading-color: #ffffff; /* #4e4e4f; */
+    --font-body-color: #ffffff; /* #1f1f1f; */
+
+}
+
+body{
+    background-color: var(--background-color);
+    /* try this purple */
+    /* background-color: #d8cfe3; */
+    font-family: 'VT323', monospace;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.5;
+    text-align: left;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+footer{
+    /* center all content */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: inherit;
+    margin-top: 60px;
+    margin-bottom: 20px;
+    padding: 0;
+    color: var(--font-body-color);
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    /* not selectable or draggable */
+    user-select: none;
+    -webkit-user-drag: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+
+    /* not draggable */
+    -webkit-user-drag: none;
+    -khtml-user-drag: none;
+    -moz-user-drag: none;
+    -o-user-drag: none;
+    
+}
+
+
+
+h1{
+    margin: 0;
+}
+h2{
+    margin: 0;
+}
+p{
+    margin: 0;
+}
+
+/* about */
+
+.about{
+    /* center all content */
+    margin-top: 4%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: inherit;
+
+    .logo{
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        /* don't stretch the image */
+        object-fit: cover;
+    }
+
+    .name{
+        font-size: 1rem;
+        color: var(--font-heading-color);
+        margin-top: 12px;
+        margin-bottom: 4px;
+        padding: 0;
+
+        /* not selectable */
+        user-select: none;
+        -webkit-user-drag: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+
+    }
+
+    .description{
+        color: var(--font-heading-color);
+        font-size: 1.3rem;
+
+        /* not selectable */
+        user-select: none;
+        -webkit-user-drag: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+
+    }
+
+    .socials{
+        .socials-ul{
+            list-style-type: none;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            background-color: #121212;
-            color: #FFFFFF;
-            text-align: center;
+            margin: 0;
+            padding: 0;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            
+
+
+            .socials-li{
+                margin-right: 7px;
+                margin-left: 7px;
+                padding: 0;
+                .socials-a{
+                    .socials-img{
+                        width: 30px;
+                        height: 30px;
+                        
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        /* don't stretch the image */
+                        object-fit: cover;
+                        transition: all 0.2s ease-in-out;
+
+                        /* hover */
+                        &:hover{
+                            transform: scale(1.1);
+                        }
+                    }
+                }
+            }
         }
-        .container {
-            max-width: 600px;
+    }
+
+}
+
+
+/* links */
+
+.link-container{
+    /* center */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    margin-top: 20px;
+    margin-bottom: 20px;
+    background-color: inherit;
+}
+
+.link-header{
+    font-size: 0.8rem;
+    letter-spacing: 3px;
+    color: var(--font-body-color);
+
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 0;
+
+    /* not selectable */
+    user-select: none;
+    -webkit-user-drag: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+
+}
+
+.link-list{
+    /* display center and vertical */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+.link-a{
+    outline: var(--font-body-color) 1.3px;
+    outline-style: dashed;
+    outline-width: 1.5px;
+    border-radius: 2px;
+
+    /* center */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+
+    width: 700px;
+    padding: 10px;
+    margin: 8px 10px;
+
+    transition: background-color 0.4s ease-out, outline-style 10s ease-in, transform 0.2s ease-in-out;
+
+    text-decoration: none;
+    color: var(--font-body-color);
+    font-size: 1.4rem;
+    letter-spacing: 0.8px;
+    
+
+    &:hover{
+        background-color: var(--link-item-color);
+        outline-style: solid;
+        outline-width: 1.2px;
+        transform: scale(1.03);
+    }
+}
+
+
+
+/* Media Queries */
+
+@media screen and (max-width: 800px){
+
+    .about{
+        .logo{
+            margin-top: 20px;
+            width: 80px;
+            height: 80px;
+            /* center */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
         }
-        h1 {
-            font-size: 2.5em;
-            margin-bottom: 1rem;
+        .name{
+            font-size: 0.9rem;
         }
-        p {
-            font-size: 1.2em;
-            margin-bottom: 2rem;
+        .description{
+            font-size: 1.1rem;
         }
-        .button {
-            display: inline-block;
-            background-color: #1DB954;
-            color: #FFFFFF;
-            padding: 15px 25px;
-            text-decoration: none;
-            font-size: 1.2em;
-            border-radius: 30px;
-            transition: background-color 0.3s, transform 0.2s;
+        .socials{
+            /* center */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
         }
-        .button:hover {
-            background-color: #1AA34A;
-            transform: scale(1.05);
-        }
-        .ms {
-            display: none;
-            visibility: hidden;
-            opacity: 0;
-        }
-    </style>
+    }
+
+    .link-a{
+        width: 76vw;
+        font-size: 1rem;
+        letter-spacing: 1px;
+    }
+}
+</style>
+
 </head>
 <body>
-    <div class="container">
-        <h1>otavio.top</h1>
-        <p>A great domain</p>
-<div class="ms">
-        <a rel="me" href="https://c.im/@otavio">Mastodon</a>
-        <a rel="me" href="https://mastodon.social/@vipnunes">mastodon.social</a>
-</div>
-    </div>
+    <section id="about" class="about">
+        <div class="logo">
+            <img class="logo" src="https://otavio.top/favicon.ico" alt="logo">
+        </div>
+        <div class="name">
+            <h1>otavio.top</h1>
+        </div>
+        <div class="description">
+            <p>Someone on the internet &#58;&#41;	</p>
+        </div>
+    </section>
+
+    <section id="links">
+
+        <!-- Start of a Tab -->
+        <div class="link-container">
+            
+            <!-- Start of links -->
+            <div class="link-list">
+                <a class="link-a" href="mailto:hi@otavio.top" target="_blank">
+                    E-mail
+                </a>
+            </div>
+        </div>
+        <!-- End of a Tab -->
+
+
+        <!-- Start of a Tab -->
+        <div class="link-container">
+            
+            <div class="link-header">
+                <h2>Social Media</h2>
+            </div>
+
+            <!-- Start of links -->
+            <div class="link-list">
+                <a class="link-a" rel="me" href="https://c.im/@otavio" target="_blank">
+                    Mastodon
+                </a>
+
+                <a class="link-a" href="https://bsky.app/profile/otavio.top" target="_blank">
+                    Bluesky
+                </a>
+            </div>
+        </div>
+        <!-- End of a Tab -->
+        </div>
+    </section>
+
+    <!-- scripts -->
+    
+    <script src="script.js"></script>
 </body>
 </html>
