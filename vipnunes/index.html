@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Welcome to my website! vipnunes.com! Here you have all the links to social media and projects on the web and itch.io, as well as access to some of my info!">
+    <meta name="keywords" content="vipnunes, Vipnunes, vip nunes, Vip nunes, Vip Nunes, VipNunes, vipnunes.com, vipnunes.run.place, Vip, vip, vipnunes.github.io, Centro Educacional Castelo, vipnunes.run.place.">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <title>Vipnunes</title>
+    <!-- Favicon -->
+    <link rel="icon" href="https://avatars.githubusercontent.com/u/149279780" alt="Profile Picture" type="image/x-icon" />
+    <!-- Font Awesome icons -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.7.2/css/all.css">
+    <!-- Core theme CSS -->
+    <link rel="stylesheet" href="style.css">
+
+  </head>
+
+  <body>
+        <a class="inv" rel="me" href="https://c.im/@otavio">Mastodon</a>
+        <a class="inv" rel="me" href="https://mastodon.social/@vipnunes">Mastodon</a>
+    
+    <!-- Parallax Pixel Background Animation -->
+      <section class="animated-background">
+      <div id="stars1"></div>
+      <div id="stars2"></div>
+      <div id="stars3"></div>
+   </section>
+    <!-- End of Parallax Pixel Background Animation -->
+
+    <a id="profilePicture" href="#popup">
+      <img src="https://avatars.githubusercontent.com/u/149279780" alt="Profile Picture"> <!-- TROCA A FOTO DE PERFIL NO GITHUB, ELE MUDA AUTOMATICAMENTE NO LINK IN BIO !-->
+    </a>
+
+    <div class="overlay" id="popup">
+      <div class="popup">
+        <div class="popup-quote">
+             Hey! you found an easter egg :)   
+        </div>
+        <a class="popup-close" onclick="history.back()">&times;</a>
+      </div>
+    </div>
+
+    <div id="userName">
+      vipnunes <img src="https://vipnunes.github.io/img/verify.svg" alt="" class="profile-image"> <!-- https://raw.githubusercontent.com/vipnunes/linktree/10146d3692ad155c3fbfb2a8dbbe58b24c93ca86/img/verify.svg -->
+    </div>
+
+   <p class="txt" id="languageParagraph">Hello, I'm Vipnunes!</p>
+    
+      <div class="social-icons">
+        <a href="https://youtube.com/vipnunes" target="_blank">
+          <i class="fab fa-youtube">&nbsp;</i>
+        </a>
+        <a href="https://blog.otavio.top" target="_blank">
+          <i class="fa fa-rss">&nbsp;</i>
+        </a>
+        <a href="https://discordapp.com/users/945093626235588638" target="_blank">
+          <i class="fab fa-discord">&nbsp;</i>
+        </a>
+      </div>
+    
+    <div id="links">
+      <a class="link" href="mailto:hi+vipnunes@otavio.top" target="_blank">
+        <i class="fa fa-envelope">&nbsp;</i> E-mail
+      </a>
+
+    <p class="txt" id=languageParagraph3>Social media</p>
+      
+      <a class="link" href="https://youtube.com/vipnunes" target="_blank">
+        <i class="fab fa-youtube">&nbsp;</i> Youtube
+      </a>
+
+      <a class="link" href="blog" target="_blank">
+          <i class="fa fa-rss">&nbsp;</i> Blog
+       </a>
+    
+      <a class="link" href="https://github.com/vipnunes" target="_blank">
+        <i class="fab fa-github">&nbsp;</i> Github
+      </a>
+      
+      <a class="link" href="https://discordapp.com/users/945093626235588638" target="_blank">
+        <i class="fab fa-discord">&nbsp;</i> Discord
+      </a>
+      
+    <p class="txt"  id=languageParagraph2>My Projects and Websites</p>
+      
+      <a rel='me' class="link" href="https://vipnunes.itch.io">
+        <i class="fa fa-gamepad">&nbsp;</i> itch.io
+      </a>
+
+    <div id="hashtag">
+      vipnunes.run.place
+    </div>
+
+<!-- Translations !-->
+<script>
+function detectLanguage() {
+    var userLanguage = navigator.language || navigator.userLanguage;
+    
+    if (userLanguage.startsWith('pt')) {
+        document.getElementById('languageParagraph').textContent = 'Olá, meu nome é Vipnunes!';
+    } else if (userLanguage.startsWith('es')) {
+        document.getElementById('languageParagraph').textContent = '¡Hola soy Vipnunes!';
+    } else {
+        document.getElementById('languageParagraph').textContent = "Hello, I'm Vipnunes!";
+    }
+}
+
+detectLanguage();
+</script>
+
+<script>
+function detectLanguage() {
+    var userLanguage = navigator.language || navigator.userLanguage;
+    
+    if (userLanguage.startsWith('pt')) {
+        document.getElementById('languageParagraph2').textContent = 'Meus projetos e sites';
+    } else if (userLanguage.startsWith('es')) {
+        document.getElementById('languageParagraph2').textContent = 'Mis proyectos y sitios web';
+    } else {
+        document.getElementById('languageParagraph2').textContent = "My Projects and Websites";
+    }
+}
+
+detectLanguage();
+</script>
+
+<script>
+function detectLanguage() {
+    var userLanguage = navigator.language || navigator.userLanguage;
+    
+    if (userLanguage.startsWith('pt')) {
+        document.getElementById('languageParagraph3').textContent = 'Redes Sociais';
+    } else if (userLanguage.startsWith('es')) {
+        document.getElementById('languageParagraph3').textContent = 'Redes Sociales';
+    } else {
+        document.getElementById('languageParagraph3').textContent = "Social media";
+    }
+}
+
+detectLanguage();
+</script>
+      
+  </body>
+</html>
