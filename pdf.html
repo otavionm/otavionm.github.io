@@ -1,143 +1,97 @@
 <!doctype html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Conversor Texto → PDF — Dark Glass</title>
+  <title>Plain text → PDF — Dark Glass</title>
 
-  <!-- jsPDF (CDN) -->
+  <!-- html2canvas + jsPDF (CDNs) -->
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
   <style>
-    /* ===== tema escuro + vidro fosco ===== */
     :root{
       --bg-1: #0b0f14;
       --bg-2: #081018;
-      --glass-1: rgba(255,255,255,0.04);
-      --glass-2: rgba(255,255,255,0.02);
-      --accent: #6dd3ff;
+      --glass-border: rgba(255,255,255,0.06);
       --muted: #99a0ab;
       --text: #e6eef6;
+      --accent: #6dd3ff;
       --radius: 14px;
       --pad: 18px;
-      --glass-border: rgba(255,255,255,0.06);
     }
-
-    html,body{height:100%;margin:0;background:linear-gradient(180deg, var(--bg-2) 0%, var(--bg-1) 100%);font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;color:var(--text);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
-
-    /* centraliza área */
-    .page {
-      min-height:100vh;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:32px;
-      box-sizing:border-box;
-    }
-
-    /* card principal com vidro fosco */
-    .card {
-      width:100%;
-      max-width:980px;
-      display:grid;
-      grid-template-columns: 1fr 360px;
-      gap:18px;
-      padding:calc(var(--pad) + 6px);
-      border-radius:var(--radius);
+    html,body{height:100%;margin:0;background:linear-gradient(180deg,var(--bg-2),var(--bg-1));font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial;color:var(--text);-webkit-font-smoothing:antialiased}
+    .page{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:28px;box-sizing:border-box}
+    .card{
+      width:100%;max-width:980px;display:grid;grid-template-columns:1fr 360px;gap:18px;padding:calc(var(--pad) + 4px);border-radius:var(--radius);
       background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-      border: 1px solid var(--glass-border);
-      box-shadow: 0 8px 30px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
-      backdrop-filter: blur(10px) saturate(120%);
-      -webkit-backdrop-filter: blur(10px) saturate(120%);
+      border:1px solid var(--glass-border); box-shadow:0 8px 30px rgba(2,6,23,0.6);backdrop-filter: blur(10px) saturate(120%);-webkit-backdrop-filter: blur(10px) saturate(120%);
     }
-
-    /* fallback para navegadores sem backdrop-filter */
     @supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
-      .card { background: linear-gradient(180deg, rgba(8,10,12,0.9), rgba(6,8,10,0.95)); }
+      .card{ background: linear-gradient(180deg, rgba(8,10,12,0.9), rgba(6,8,10,0.95)); }
     }
 
-    h1 { margin:0 0 8px 0; font-size:18px; color:var(--text); }
-    .left { padding:6px 0; }
-    label { display:block; font-size:13px; color:var(--muted); margin-top:12px; }
-    input[type="text"], input[type="number"], select {
-      width:100%;
-      padding:9px 10px;
-      border-radius:8px;
-      background: rgba(10,12,14,0.6);
-      border: 1px solid rgba(255,255,255,0.04);
-      color:var(--text);
-      font-size:13px;
-      box-sizing:border-box;
-      outline: none;
+    h1{margin:0 0 8px 0;font-size:18px;color:var(--text)}
+    label{display:block;font-size:13px;color:var(--muted);margin-top:10px}
+    input[type="text"], input[type="number"], select{width:100%;padding:9px;border-radius:8px;background: rgba(10,12,14,0.6);border:1px solid rgba(255,255,255,0.04);color:var(--text);font-size:13px;box-sizing:border-box}
+    .controls{display:flex;gap:8px;align-items:center;margin-top:12px;flex-wrap:wrap}
+    .right{padding-left:6px;border-left:1px solid rgba(255,255,255,0.02)}
+    .panel{background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.02);color:var(--muted)}
+    .panel strong{color:var(--text)}
+    .note{font-size:12px;color:var(--muted);margin-top:8px;display:block}
+    button{
+      background: linear-gradient(180deg, rgba(109,211,255,0.12), rgba(109,211,255,0.04));
+      color:var(--text);border:1px solid rgba(109,211,255,0.12);padding:9px 12px;border-radius:8px;cursor:pointer;font-weight:600;
     }
-    .controls { display:flex; gap:8px; align-items:center; margin-top:12px; flex-wrap:wrap; }
-    textarea {
-      width:100%;
-      min-height:460px;
-      padding:12px;
-      resize:vertical;
-      border-radius:10px;
-      border:1px solid rgba(255,255,255,0.04);
-      background: linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0.01));
-      color:var(--text);
-      font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace;
-      font-size:13px;
-      line-height:1.5;
-      box-sizing:border-box;
+    button.ghost{background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--muted);font-weight:500}
+    .toolbar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+    .toolbar button{padding:8px 10px;font-weight:600;font-size:13px}
+    .editor{
+      min-height:420px;border-radius:10px;border:1px solid rgba(255,255,255,0.04);
+      background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005));
+      color:var(--text);padding:14px;overflow:auto;font-size:14px;line-height:1.45;
     }
+    .editor:focus{outline:2px solid rgba(109,211,255,0.08)}
+    .muted{color:var(--muted)}
+    #preview{margin-top:8px;font-size:13px;color:var(--muted);max-height:220px;overflow:auto;white-space:pre-wrap;padding:8px;background: rgba(0,0,0,0.12);border-radius:8px;border:1px solid rgba(255,255,255,0.02)}
+    input[type="file"]{display:none}
 
-    button {
-      background: linear-gradient(180deg, rgba(109,211,255,0.16), rgba(109,211,255,0.06));
-      color:var(--text);
-      border:1px solid rgba(109,211,255,0.12);
-      padding:10px 12px;
-      border-radius:10px;
-      cursor:pointer;
-      font-weight:600;
-      transition: transform .08s ease, box-shadow .08s;
-    }
-    button:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(6,20,30,0.45) }
-    button.ghost {
-      background: transparent;
-      border:1px solid rgba(255,255,255,0.04);
-      color:var(--muted);
-      font-weight:500;
-    }
-
-    .right { padding-left:6px; border-left: 1px solid rgba(255,255,255,0.02) }
-    .panel { background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); padding:12px; border-radius:10px; border:1px solid rgba(255,255,255,0.02); color:var(--muted) }
-    .panel strong { color:var(--text) }
-    .field { margin-top:10px; }
-    .note { font-size:12px; color:var(--muted); margin-top:8px; display:block }
-
-    /* preview */
-    #preview { margin-top:8px; font-size:13px; color:var(--muted); max-height:220px; overflow:auto; white-space:pre-wrap; padding:8px; background: rgba(0,0,0,0.15); border-radius:8px; border:1px solid rgba(255,255,255,0.02) }
-
-    footer.info { margin-top:10px; color:var(--muted); font-size:12px }
-
+    /* small responsive */
     @media (max-width:980px){
-      .card { grid-template-columns: 1fr; padding:14px; }
-      .right{ border-left: none; padding-left:0; margin-top:8px; }
-      textarea { min-height:300px; }
+      .card{grid-template-columns:1fr;padding:14px}
+      .right{border-left:none;padding-left:0;margin-top:8px}
+      .editor{min-height:280px}
     }
+
+    /* styles for the PDF clone (light background) */
+    .pdf-clone{
+      background: white !important;
+      color: black !important;
+      padding: 18mm !important;
+      font-family: Arial, Helvetica, sans-serif !important;
+      font-size: 12pt !important;
+      line-height: 1.45 !important;
+    }
+    /* ensure images fit in clone width */
+    .pdf-clone img{max-width:100%;height:auto;display:block;margin:6px 0}
   </style>
 </head>
 <body>
   <div class="page">
-    <main class="card" role="main" aria-label="Conversor texto para PDF">
-      <section class="left">
-        <h1>Conversor — texto → PDF</h1>
+    <main class="card" role="main" aria-label="Plain text to PDF converter">
+      <section style="padding:6px 0">
+        <h1>Plain text → PDF</h1>
 
-        <label for="titulo">Nome do arquivo (opcional)</label>
-        <input id="titulo" type="text" placeholder="meu_documento.pdf" />
+        <label for="title">File name (optional)</label>
+        <input id="title" type="text" placeholder="otavio-pdf.pdf" />
 
         <div style="display:flex;gap:12px;margin-top:10px;">
           <div style="flex:1">
-            <label for="fontsize">Tamanho da fonte (pt)</label>
+            <label for="fontsize">Font size (pt)</label>
             <input id="fontsize" type="number" min="8" max="28" value="12" />
           </div>
           <div style="width:140px">
-            <label for="format">Formato</label>
+            <label for="format">Format</label>
             <select id="format">
               <option value="a4">A4</option>
               <option value="letter">Letter</option>
@@ -146,69 +100,73 @@
           </div>
         </div>
 
-        <label for="texto" style="margin-top:12px">Texto</label>
-        <textarea id="texto" placeholder="Cole ou digite seu texto aqui. Separe parágrafos com linhas em branco."></textarea>
+        <label style="margin-top:12px">Editor</label>
 
-        <div class="controls">
-          <button id="gerar">Gerar PDF</button>
-          <button class="ghost" id="limpar">Limpar</button>
-          <div style="margin-left:auto;color:var(--muted)">Gera PDF no navegador — sem upload.</div>
+        <div class="toolbar" aria-hidden="false">
+          <button title="Bold (Ctrl/Cmd+B)" id="b-btn"><strong>B</strong></button>
+          <button title="Italic (Ctrl/Cmd+I)" id="i-btn"><em>I</em></button>
+          <button title="Strikethrough" id="s-btn"><s>S</s></button>
+          <button title="Underline" id="u-btn"><u>U</u></button>
+          <button title="Link" id="link-btn">Link</button>
+          <button title="Email" id="email-btn">@</button>
+          <button title="Image" id="img-btn">Image</button>
+          <input id="img-input" type="file" accept="image/*">
         </div>
 
-        <footer class="info">Se precisar de suporte a fontes Unicode completas (emoji, ideogramas), eu adiciono a fonte embutida — o arquivo ficará maior.</footer>
+        <!-- editable region -->
+        <div id="editor" class="editor" contenteditable="true" aria-label="Text editor" spellcheck="true">
+<p>Type or paste plain text here. Use toolbar to format. You may insert images with the Image button.</p>
+</div>
+
+        <div class="controls" style="margin-top:10px">
+          <button id="generate">Generate PDF</button>
+          <button class="ghost" id="clear">Clear</button>
+          <div style="margin-left:auto;color:var(--muted)">Turn plain text into PDF with just a few clicks</div>
+        </div>
+
+        <footer style="margin-top:10px;color:var(--muted);font-size:13px">Default download name: <strong>otavio-pdf.pdf</strong></footer>
       </section>
 
-      <aside class="right" aria-label="Opções">
+      <aside class="right" aria-label="Options">
         <div class="panel">
-          <strong>Opções avançadas</strong>
+          <strong>Advanced options</strong>
 
-          <div class="field">
-            <label for="fontfamily">Fonte</label>
-            <select id="fontfamily">
-              <option value="times">Times</option>
-              <option value="helvetica" selected>Helvetica</option>
-              <option value="courier">Courier</option>
-            </select>
-          </div>
-
-          <div class="field">
-            <label for="align">Alinhamento</label>
+          <div style="margin-top:10px">
+            <label for="align">Text alignment</label>
             <select id="align">
-              <option value="left" selected>Esquerda</option>
-              <option value="center">Centralizado</option>
-              <option value="right">Direita</option>
-              <option value="justify">Justificado (aprox.)</option>
+              <option value="left" selected>Left</option>
+              <option value="center">Center</option>
+              <option value="right">Right</option>
+              <option value="justify">Justify</option>
             </select>
           </div>
 
-          <div class="field">
-            <label for="margin">Margem (mm)</label>
+          <div style="margin-top:10px">
+            <label for="margin">Page margin (mm)</label>
             <input id="margin" type="number" min="6" max="40" value="15" />
           </div>
 
-          <div class="field">
-            <label for="pagenumbers">Número de página</label>
+          <div style="margin-top:10px">
+            <label for="pagenumbers">Page numbers</label>
             <select id="pagenumbers">
-              <option value="no" selected>Não</option>
-              <option value="bottom">Rodapé (centro)</option>
-              <option value="top">Cabeçalho (direita)</option>
+              <option value="no" selected>No</option>
+              <option value="bottom">Footer (center)</option>
+              <option value="top">Header (right)</option>
             </select>
           </div>
 
           <div style="display:flex;gap:8px;margin-top:12px">
-            <button id="baixar">Gerar e baixar</button>
-            <button class="ghost" id="copiar">Copiar texto</button>
+            <button id="download">Generate & download</button>
+            <button class="ghost" id="copy">Copy</button>
           </div>
 
-          <div class="field">
-            <small class="note">O conversor transforma parágrafos separados por linha em branco. Quebras internas de linha são convertidas em espaço no parágrafo.</small>
-          </div>
+          <div style="margin-top:10px"><small class="note">Editor is WYSIWYG. Links and images are preserved in output.</small></div>
         </div>
 
         <div class="panel" style="margin-top:12px">
-          <strong>Pré-visualização</strong>
+          <strong>Preview</strong>
           <div id="preview"></div>
-          <small class="note">Mostra os primeiros 1000 caracteres do texto.</small>
+          <small class="note">Shows first 1000 characters of plain text (text-only).</small>
         </div>
       </aside>
     </main>
@@ -217,156 +175,215 @@
   <script>
     (function () {
       const { jsPDF } = window.jspdf;
+      const editor = document.getElementById('editor');
+      const preview = document.getElementById('preview');
+      const imgInput = document.getElementById('img-input');
 
-      const el = {
-        texto: document.getElementById('texto'),
-        gerar: document.getElementById('gerar'),
-        limpar: document.getElementById('limpar'),
-        titulo: document.getElementById('titulo'),
-        fontsize: document.getElementById('fontsize'),
-        format: document.getElementById('format'),
-        fontfamily: document.getElementById('fontfamily'),
-        align: document.getElementById('align'),
-        margin: document.getElementById('margin'),
-        pagenumbers: document.getElementById('pagenumbers'),
-        baixar: document.getElementById('baixar'),
-        copiar: document.getElementById('copiar'),
-        preview: document.getElementById('preview')
-      };
-
-      function atualizaPreview() {
-        const t = el.texto.value || '';
-        el.preview.textContent = t.slice(0, 1000) + (t.length > 1000 ? '\n\n... (restante oculto)' : '');
+      // toolbar actions using execCommand for simplicity
+      function exec(cmd, val = null) {
+        document.execCommand(cmd, false, val);
+        editor.focus();
+        updatePreview();
       }
-      el.texto.addEventListener('input', atualizaPreview);
-      atualizaPreview();
 
-      el.limpar.addEventListener('click', () => {
-        el.texto.value = '';
-        atualizaPreview();
+      document.getElementById('b-btn').addEventListener('click', () => exec('bold'));
+      document.getElementById('i-btn').addEventListener('click', () => exec('italic'));
+      document.getElementById('s-btn').addEventListener('click', () => exec('strikeThrough'));
+      document.getElementById('u-btn').addEventListener('click', () => exec('underline'));
+
+      document.getElementById('link-btn').addEventListener('click', () => {
+        const url = prompt('Insert URL (include https://):', 'https://');
+        if (url) exec('createLink', url);
       });
 
-      el.copiar.addEventListener('click', async () => {
-        try {
-          await navigator.clipboard.writeText(el.texto.value || '');
-          alert('Texto copiado para a área de transferência.');
-        } catch (e) {
-          alert('Não foi possível copiar automaticamente. Selecione e copie manualmente.');
+      document.getElementById('email-btn').addEventListener('click', () => {
+        const email = prompt('Insert email address:','example@example.com');
+        if (email) exec('createLink', 'mailto:' + email);
+      });
+
+      document.getElementById('img-btn').addEventListener('click', () => {
+        imgInput.click();
+      });
+
+      imgInput.addEventListener('change', async (e) => {
+        const f = e.target.files && e.target.files[0];
+        if (!f) return;
+        const reader = new FileReader();
+        reader.onload = () => {
+          // insert image as data URL
+          exec('insertImage', reader.result);
+        };
+        reader.readAsDataURL(f);
+        // reset input
+        e.target.value = '';
+      });
+
+      // simple preview of text content
+      function updatePreview() {
+        const textOnly = editor.innerText || '';
+        preview.textContent = textOnly.slice(0, 1000) + (textOnly.length > 1000 ? '\n\n... (rest hidden)' : '');
+      }
+      editor.addEventListener('input', updatePreview);
+      updatePreview();
+
+      document.getElementById('clear').addEventListener('click', () => {
+        if (confirm('Clear editor content?')) {
+          editor.innerHTML = '';
+          updatePreview();
         }
       });
 
-      function sanitizeFilename(name) {
-        if (!name) return 'documento.pdf';
-        let s = name.trim();
-        // adiciona extensão se necessário
-        if (!/\.[a-zA-Z0-9]{1,5}$/.test(s)) s += '.pdf';
-        return s.replace(/[^\w\-\.çÇãÃáÁàÀéÉíÍóÓúÚüÜõÕ ]/g, '_').replace(/\s+/g, '_');
+      document.getElementById('copy').addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(editor.innerText || '');
+          alert('Text copied to clipboard.');
+        } catch (err) {
+          alert('Copy failed. Select and copy manually.');
+        }
+      });
+
+      // helper: clone editor into a printable light-background container
+      function makePdfClone(fontSizePt, align) {
+        const clone = editor.cloneNode(true);
+        clone.style.maxWidth = '100%';
+        clone.style.boxSizing = 'border-box';
+        // apply pdf-clone styles
+        clone.classList.add('pdf-clone');
+        // remove contenteditable and UI artifacts
+        clone.removeAttribute('contenteditable');
+        clone.querySelectorAll('[contenteditable]').forEach(n => n.removeAttribute('contenteditable'));
+        // apply font-size and text alignment
+        clone.style.fontSize = (fontSizePt) + 'pt';
+        clone.style.textAlign = align;
+        // sanitize styles that could break rendering (keep basic tags)
+        return clone;
       }
 
-      function ptToMm(pt){ return pt * 0.3527777778; } // 1pt = 0.3527777778 mm
+      // generate PDF using jsPDF.html, then add footer on every page
+      async function generatePdfAndSave(filenameOverride) {
+        const rawText = editor.innerText || '';
+        if (!rawText.trim()) { alert('Please enter some text or content before generating PDF.'); return; }
 
-      // Gera PDF (retorna true se gerou)
-      function gerarPDF(filenameOverride) {
-        const raw = el.texto.value || '';
-        if (!raw.trim()) { alert('Insira algum texto antes de gerar o PDF.'); return false; }
+        const fontSize = Number(document.getElementById('fontsize').value) || 12;
+        const format = document.getElementById('format').value || 'a4';
+        const margin = Number(document.getElementById('margin').value) || 15;
+        const align = document.getElementById('align').value || 'left';
+        const pageNumbers = document.getElementById('pagenumbers').value || 'no';
 
-        const fontSize = Number(el.fontsize.value) || 12;
-        const format = el.format.value || 'a4';
-        const font = el.fontfamily.value || 'helvetica';
-        const align = el.align.value || 'left';
-        const margin = Number(el.margin.value) || 15;
-        const pageNumbers = el.pagenumbers.value || 'no';
+        // filename default
+        let filename = (document.getElementById('title').value || '').trim();
+        if (!filename) filename = 'otavio-pdf.pdf';
+        // sanitize
+        filename = filename.replace(/[^\w\-\.\sçÇãÃáÁàÀéÉíÍóÓúÚüÜõÕ@]/g, '_');
 
-        const filename = sanitizeFilename(filenameOverride || el.titulo.value);
+        if (filenameOverride) filename = filenameOverride;
 
+        // create PDF doc
         const doc = new jsPDF({ unit: 'mm', format: format, putOnlyUsedFonts: true, floatPrecision: 16 });
+
+        // create clone with light background for clearer print
+        const clone = makePdfClone(fontSize, align);
+
+        // place clone off-screen to allow html2canvas to render styles properly
+        clone.style.position = 'fixed';
+        clone.style.left = '-9999px';
+        clone.style.top = '0px';
+        document.body.appendChild(clone);
+
+        // jsPDF.html options
         const pageWidth = doc.internal.pageSize.getWidth();
         const pageHeight = doc.internal.pageSize.getHeight();
         const usableWidth = pageWidth - margin * 2;
 
-        doc.setFont(font);
-        doc.setFontSize(fontSize);
+        // Use scale to improve quality; html2canvas scale depends on devicePixelRatio.
+        const scale = Math.max(1, (window.devicePixelRatio || 1));
 
-        // transformar em paragráfos (separados por linha em branco)
-        const paragraphs = raw.split(/\r?\n\s*\r?\n/).map(p => p.replace(/\r?\n/g, ' ').trim());
+        // doc.html will auto paginate content taller than page
+        await new Promise((resolve, reject) => {
+          doc.html(clone, {
+            x: margin,
+            y: margin,
+            html2canvas: {
+              scale: scale,
+              // use a higher width so text is not wrapped weirdly
+              width: clone.scrollWidth,
+              windowWidth: Math.max(document.documentElement.clientWidth, clone.scrollWidth)
+            },
+            callback: function (docArg) {
+              try {
+                // add footer to each page
+                const totalPages = docArg.getNumberOfPages();
+                const footerText = 'Created on https://otavio.top/pdf';
+                const footerFontSize = Math.max(8, Math.round(fontSize * 0.8));
+                for (let i = 1; i <= totalPages; i++) {
+                  docArg.setPage(i);
+                  docArg.setFontSize(footerFontSize);
+                  docArg.setTextColor(110, 110, 110); // grey footer
+                  const xCenter = pageWidth / 2;
+                  const y = pageHeight - margin / 2;
+                  docArg.text(footerText, xCenter, y, { align: 'center' });
+                  // optionally add page numbers
+                  if (pageNumbers !== 'no') {
+                    const ptxt = `${i} / ${totalPages}`;
+                    docArg.setFontSize(Math.max(8, footerFontSize - 1));
+                    if (pageNumbers === 'bottom') {
+                      docArg.text(ptxt, xCenter, y - 6, { align: 'center' });
+                    } else if (pageNumbers === 'top') {
+                      docArg.text(ptxt, pageWidth - margin, margin / 2 + 2, { align: 'right' });
+                    }
+                  }
+                }
+                resolve();
+              } catch (e) {
+                reject(e);
+              }
+            },
+            margin: [margin, margin, margin, margin]
+          });
+        }).catch(err => {
+          console.error('Error generating PDF:', err);
+          alert('An error occurred while generating the PDF.');
+        });
 
-        const lineHeight = ptToMm(fontSize) * 1.25;
-        let cursorY = margin + ptToMm(fontSize);
+        // cleanup clone
+        document.body.removeChild(clone);
 
-        // função para adicionar nova página quando necessário
-        function ensurePageSpace(needed) {
-          if (cursorY + needed > pageHeight - margin) {
-            doc.addPage();
-            cursorY = margin + ptToMm(fontSize);
-          }
+        // save
+        try {
+          doc.save(filename);
+        } catch (e) {
+          console.error(e);
+          alert('Download failed.');
         }
-
-        // para contar total de páginas quando usar numeração, geramos e depois adicionamos numeração
-        // estratégia simples: gerar conteúdo em páginas, lembrando posições para numerar depois
-        const pageCountBefore = doc.getNumberOfPages ? doc.getNumberOfPages() : 1;
-
-        for (let p = 0; p < paragraphs.length; p++) {
-          const paragraph = paragraphs[p];
-          if (!paragraph) {
-            cursorY += lineHeight;
-            continue;
-          }
-          const lines = doc.splitTextToSize(paragraph, usableWidth);
-          for (let i = 0; i < lines.length; i++) {
-            ensurePageSpace(lineHeight);
-            // alinhamento
-            if (align === 'center' || align === 'right') {
-              // usar opções de jsPDF para alinhamento com maxWidth
-              doc.text(String(lines[i]), margin + usableWidth / 2, cursorY, { maxWidth: usableWidth, align: align });
-            } else if (align === 'justify') {
-              // jsPDF não tem justify nativo para text(); aproximamos com left
-              doc.text(String(lines[i]), margin, cursorY, { maxWidth: usableWidth });
-            } else {
-              doc.text(String(lines[i]), margin, cursorY, { maxWidth: usableWidth });
-            }
-            cursorY += lineHeight;
-          }
-          cursorY += lineHeight * 0.45; // espaço entre parágrafos
-        }
-
-        // número de páginas: adicionar em cada página se pedido
-        if (pageNumbers !== 'no') {
-          const total = doc.getNumberOfPages();
-          // percorre páginas e adiciona numeração
-          for (let i = 1; i <= total; i++) {
-            doc.setPage(i);
-            doc.setFontSize(Math.max(8, fontSize - 2));
-            const text = `${i} / ${total}`;
-            if (pageNumbers === 'bottom') {
-              doc.text(text, pageWidth / 2, pageHeight - margin / 2, { align: 'center' });
-            } else if (pageNumbers === 'top') {
-              doc.text(text, pageWidth - margin, margin / 2 + 2, { align: 'right' });
-            }
-            doc.setFontSize(fontSize);
-          }
-        }
-
-        // voltar para a primeira página antes de salvar
-        try { doc.setPage(1); } catch(e) { /* ignore */ }
-        doc.save(filename);
-        return true;
       }
 
-      el.gerar.addEventListener('click', () => gerarPDF());
+      document.getElementById('generate').addEventListener('click', () => generatePdfAndSave());
+      document.getElementById('download').addEventListener('click', () => generatePdfAndSave());
 
-      el.baixar.addEventListener('click', () => {
-        const nome = el.titulo.value.trim();
-        gerarPDF(nome || null);
+      // keyboard shortcuts for formatting in editor
+      editor.addEventListener('keydown', (e) => {
+        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'b') { e.preventDefault(); exec('bold'); }
+        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'i') { e.preventDefault(); exec('italic'); }
       });
 
-      // também permitir Ctrl+Enter para gerar
-      el.texto.addEventListener('keydown', (e) => {
-        if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
-          e.preventDefault();
-          gerarPDF();
-        }
-      });
+      // ensure preview updates initially
+      updatePreview();
 
+      // small helper to sync preview
+      function updatePreview() {
+        const textOnly = editor.innerText || '';
+        preview.textContent = textOnly.slice(0, 1000) + (textOnly.length > 1000 ? '\n\n... (rest hidden)' : '');
+      }
+
+      // exec wrapper to keep focus
+      function exec(cmd, val = null) {
+        document.execCommand(cmd, false, val);
+        editor.focus();
+        updatePreview();
+      }
+
+      // expose exec for toolbar image insertion
+      window.exec = exec;
     })();
   </script>
 </body>
