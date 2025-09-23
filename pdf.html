@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Conversor Texto → PDF — Dark Glass</title>
+  <title>Text → PDF Converter — otavio.top/pdf</title>
 
   <!-- jsPDF (CDN) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -126,18 +126,18 @@
   <div class="page">
     <main class="card" role="main" aria-label="Conversor texto para PDF">
       <section class="left">
-        <h1>Conversor — texto → PDF</h1>
+        <h1>Text → PDF</h1>
 
-        <label for="titulo">Nome do arquivo (opcional)</label>
-        <input id="titulo" type="text" placeholder="meu_documento.pdf" />
+        <label for="titulo">File name (optional)</label>
+        <input id="titulo" type="text" placeholder="otavio-pdf.pdf" />
 
         <div style="display:flex;gap:12px;margin-top:10px;">
           <div style="flex:1">
-            <label for="fontsize">Tamanho da fonte (pt)</label>
+            <label for="fontsize">Font size (px)</label>
             <input id="fontsize" type="number" min="8" max="28" value="12" />
           </div>
           <div style="width:140px">
-            <label for="format">Formato</label>
+            <label for="format">Format</label>
             <select id="format">
               <option value="a4">A4</option>
               <option value="letter">Letter</option>
@@ -146,24 +146,24 @@
           </div>
         </div>
 
-        <label for="texto" style="margin-top:12px">Texto</label>
-        <textarea id="texto" placeholder="Cole ou digite seu texto aqui. Separe parágrafos com linhas em branco."></textarea>
+        <label for="texto" style="margin-top:12px">Text</label>
+        <textarea id="texto" placeholder="Paste or type your text here."></textarea>
 
         <div class="controls">
-          <button id="gerar">Gerar PDF</button>
-          <button class="ghost" id="limpar">Limpar</button>
-          <div style="margin-left:auto;color:var(--muted)">Gera PDF no navegador — sem upload.</div>
+          <button id="gerar">Generate PDF</button>
+          <button class="ghost" id="limpar">Clean text</button>
+          <div style="margin-left:auto;color:var(--muted)">Generate PDF on browser — No data is colected.</div>
         </div>
 
-        <footer class="info">Se precisar de suporte a fontes Unicode completas (emoji, ideogramas), eu adiciono a fonte embutida — o arquivo ficará maior.</footer>
+        <footer class="info">Warning: Emojis and some other Unicode characters does no work.</footer>
       </section>
 
       <aside class="right" aria-label="Opções">
         <div class="panel">
-          <strong>Opções avançadas</strong>
+          <strong>Advanced options</strong>
 
           <div class="field">
-            <label for="fontfamily">Fonte</label>
+            <label for="fontfamily">Font</label>
             <select id="fontfamily">
               <option value="times">Times</option>
               <option value="helvetica" selected>Helvetica</option>
@@ -182,33 +182,33 @@
           </div>
 
           <div class="field">
-            <label for="margin">Margem (mm)</label>
+            <label for="margin">Margin (mm)</label>
             <input id="margin" type="number" min="6" max="40" value="15" />
           </div>
 
           <div class="field">
-            <label for="pagenumbers">Número de página</label>
+            <label for="pagenumbers">Show page number, e.g. 1/3</label>
             <select id="pagenumbers">
-              <option value="no" selected>Não</option>
-              <option value="bottom">Rodapé (centro)</option>
-              <option value="top">Cabeçalho (direita)</option>
+              <option value="no" selected>No</option>
+              <option value="bottom">Footer (center)</option>
+              <option value="top">Header (right)</option>
             </select>
           </div>
 
           <div style="display:flex;gap:8px;margin-top:12px">
-            <button id="baixar">Gerar e baixar</button>
-            <button class="ghost" id="copiar">Copiar texto</button>
+            <button id="baixar">Generate & Download</button>
+            <button class="ghost" id="copiar">Copy text</button>
           </div>
 
           <div class="field">
-            <small class="note">O conversor transforma parágrafos separados por linha em branco. Quebras internas de linha são convertidas em espaço no parágrafo.</small>
+            <small class="note">The converter converts paragraphs separated by blank lines. Internal line breaks are converted to spaces within the paragraph.</small>
           </div>
         </div>
 
         <div class="panel" style="margin-top:12px">
-          <strong>Pré-visualização</strong>
+          <strong>Preview</strong>
           <div id="preview"></div>
-          <small class="note">Mostra os primeiros 1000 caracteres do texto.</small>
+          <small class="note">Displays the first 1000 characters of the text.</small>
         </div>
       </aside>
     </main>
@@ -256,7 +256,7 @@
       });
 
       function sanitizeFilename(name) {
-        if (!name) return 'documento.pdf';
+        if (!name) return 'otavio-pdf.pdf';
         let s = name.trim();
         // adiciona extensão se necessário
         if (!/\.[a-zA-Z0-9]{1,5}$/.test(s)) s += '.pdf';
