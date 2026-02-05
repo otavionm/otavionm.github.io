@@ -9,6 +9,9 @@
 }
 
 body {
+    display: grid;
+    place-items: center;
+    height: 100vh;
     color: fff;
     margin: 0;
     padding: 0;
@@ -21,8 +24,7 @@ body {
     animation-fill-mode: forwards;
     background-repeat: no-repeat;
     background-size: cover;
-    position: absolute;
-    transform: translate(-50%, -50%);
+    position: relative;
 }
 
 #profilePicture, #profilePicture img {
