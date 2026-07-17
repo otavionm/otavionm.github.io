@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Meu Linktree</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+
+    font-family:Inter,sans-serif;
+
+    min-height:100vh;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    background:
+    radial-gradient(circle at top,#3a3a55 0%,#111118 45%,#090909 100%);
+
+    overflow-x:hidden;
+
+    color:white;
+}
+
+body::before{
+
+content:"";
+
+position:fixed;
+
+width:600px;
+height:600px;
+
+background:#5f7cff33;
+
+filter:blur(150px);
+
+top:-250px;
+left:-150px;
+
+pointer-events:none;
+
+}
+
+body::after{
+
+content:"";
+
+position:fixed;
+
+width:500px;
+height:500px;
+
+background:#8a5cff22;
+
+filter:blur(160px);
+
+right:-180px;
+bottom:-200px;
+
+pointer-events:none;
+
+}
+
+.container{
+
+width:min(420px,92%);
+
+padding:30px;
+
+text-align:center;
+
+}
+
+.profile{
+
+margin-bottom:35px;
+
+}
+
+.profile img{
+
+width:120px;
+height:120px;
+
+border-radius:50%;
+
+object-fit:cover;
+
+border:3px solid rgba(255,255,255,.2);
+
+backdrop-filter:blur(15px);
+
+box-shadow:
+0 15px 40px rgba(0,0,0,.5);
+
+}
+
+.profile h1{
+
+margin-top:18px;
+
+font-size:30px;
+
+font-weight:700;
+
+}
+
+.profile p{
+
+margin-top:8px;
+
+opacity:.75;
+
+font-size:15px;
+
+line-height:1.5;
+
+}
+
+.links{
+
+display:flex;
+
+flex-direction:column;
+
+gap:18px;
+
+}
+
+.link{
+
+position:relative;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+gap:14px;
+
+padding:18px;
+
+text-decoration:none;
+
+color:white;
+
+font-weight:600;
+
+font-size:17px;
+
+border-radius:24px;
+
+background:
+rgba(255,255,255,.08);
+
+border:1px solid rgba(255,255,255,.12);
+
+backdrop-filter:blur(30px)
+saturate(180%);
+
+-webkit-backdrop-filter:blur(30px)
+saturate(180%);
+
+box-shadow:
+
+0 10px 40px rgba(0,0,0,.35),
+
+inset 0 1px 1px rgba(255,255,255,.25),
+
+inset 0 -2px 8px rgba(255,255,255,.03);
+
+transition:.35s;
+
+overflow:hidden;
+
+}
+
+.link::before{
+
+content:"";
+
+position:absolute;
+
+left:-60%;
+
+top:-60%;
+
+width:60%;
+
+height:220%;
+
+background:
+
+linear-gradient(
+90deg,
+transparent,
+rgba(255,255,255,.35),
+transparent);
+
+transform:rotate(20deg);
+
+transition:.8s;
+
+}
+
+.link:hover::before{
+
+left:150%;
+
+}
+
+.link:hover{
+
+transform:translateY(-4px) scale(1.02);
+
+background:rgba(255,255,255,.13);
+
+box-shadow:
+
+0 18px 45px rgba(0,0,0,.45);
+
+}
+
+.link i{
+
+font-size:22px;
+
+width:30px;
+
+}
+
+.footer{
+
+margin-top:35px;
+
+font-size:13px;
+
+opacity:.5;
+
+}
+
+@media(max-width:500px){
+
+.profile img{
+
+width:100px;
+height:100px;
+
+}
+
+.profile h1{
+
+font-size:26px;
+
+}
+
+.link{
+
+padding:17px;
+
+font-size:16px;
+
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="profile">
+
+<img src="https://i.pravatar.cc/300" alt="Perfil">
+
+<h1>Seu Nome</h1>
+
+<p>
+Criador de conteúdo • Desenvolvedor • Links oficiais
+</p>
+
+</div>
+
+<div class="links">
+
+<a class="link" href="#">
+
+<i class="fab fa-youtube"></i>
+
+YouTube
+
+</a>
+
+<a class="link" href="#">
+
+<i class="fab fa-instagram"></i>
+
+Instagram
+
+</a>
+
+<a class="link" href="#">
+
+<i class="fab fa-discord"></i>
+
+Discord
+
+</a>
+
+<a class="link" href="#">
+
+<i class="fas fa-globe"></i>
+
+Website
+
+</a>
+
+<a class="link" href="#">
+
+<i class="fab fa-github"></i>
+
+GitHub
+
+</a>
+
+</div>
+
+<div class="footer">
+
+© 2026 • Todos os direitos reservados
+
+</div>
+
+</div>
+
+</body>
+</html>
