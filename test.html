@@ -151,45 +151,55 @@ gap:18px;
 position:relative;
 
 display:flex;
-
 align-items:center;
-
 justify-content:center;
-
 gap:14px;
 
-padding:18px;
+padding:20px;
 
 text-decoration:none;
-
-color:white;
+color:#fff;
 
 font-weight:600;
-
 font-size:17px;
 
-border-radius:24px;
+border-radius:28px;
 
+/* Vidro mais espesso */
 background:
-rgba(255,255,255,.08);
+linear-gradient(
+180deg,
+rgba(255,255,255,.18),
+rgba(255,255,255,.06)
+);
 
-border:1px solid rgba(255,255,255,.12);
+border:1px solid rgba(255,255,255,.20);
 
-backdrop-filter:blur(30px)
-saturate(180%);
+backdrop-filter:
+blur(38px)
+saturate(220%)
+contrast(115%);
 
--webkit-backdrop-filter:blur(30px)
-saturate(180%);
+-webkit-backdrop-filter:
+blur(38px)
+saturate(220%)
+contrast(115%);
 
+/* Aparência "áspera" */
 box-shadow:
 
-0 10px 40px rgba(0,0,0,.35),
+0 20px 45px rgba(0,0,0,.45),
 
-inset 0 1px 1px rgba(255,255,255,.25),
+inset 0 1px 0 rgba(255,255,255,.45),
 
-inset 0 -2px 8px rgba(255,255,255,.03);
+inset 0 -3px 12px rgba(255,255,255,.05),
 
-transition:.35s;
+inset 0 0 30px rgba(255,255,255,.03);
+
+transition:
+transform .28s cubic-bezier(.2,.8,.2,1),
+box-shadow .28s,
+background .28s;
 
 overflow:hidden;
 
@@ -201,25 +211,32 @@ content:"";
 
 position:absolute;
 
-left:-60%;
+width:180%;
+height:120%;
 
-top:-60%;
-
-width:60%;
-
-height:220%;
+left:-140%;
+top:-10%;
 
 background:
-
 linear-gradient(
-90deg,
-transparent,
-rgba(255,255,255,.35),
-transparent);
+110deg,
+transparent 25%,
+rgba(255,255,255,.45) 45%,
+rgba(255,255,255,.15) 52%,
+transparent 70%
+);
 
-transform:rotate(20deg);
+transform:rotate(10deg);
 
-transition:.8s;
+transition:1s;
+
+pointer-events:none;
+
+}
+
+.link:hover::before{
+
+left:120%;
 
 }
 
@@ -231,13 +248,48 @@ left:150%;
 
 .link:hover{
 
-transform:translateY(-4px) scale(1.02);
+transform:
+translateY(-6px)
+scale(1.09);
 
-background:rgba(255,255,255,.13);
+background:
+linear-gradient(
+180deg,
+rgba(255,255,255,.24),
+rgba(255,255,255,.08)
+);
 
 box-shadow:
 
-0 18px 45px rgba(0,0,0,.45);
+0 35px 60px rgba(0,0,0,.55),
+
+0 0 25px rgba(255,255,255,.08),
+
+inset 0 2px 0 rgba(255,255,255,.55),
+
+inset 0 -5px 18px rgba(255,255,255,.08);
+
+}
+    
+.link::after{
+
+content:"";
+
+position:absolute;
+
+inset:0;
+
+border-radius:inherit;
+
+background:
+radial-gradient(circle at 20% 20%, rgba(255,255,255,.10), transparent 40%),
+radial-gradient(circle at 80% 80%, rgba(255,255,255,.05), transparent 35%);
+
+mix-blend-mode:screen;
+
+opacity:.75;
+
+pointer-events:none;
 
 }
 
